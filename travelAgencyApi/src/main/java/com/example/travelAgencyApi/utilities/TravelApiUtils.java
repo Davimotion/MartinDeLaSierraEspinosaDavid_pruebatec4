@@ -48,6 +48,8 @@ public class TravelApiUtils {
             dto.setNumBookedSeatsBusiness(flight.getNumBookedSeatsBusiness());
             dto.setNumSeatsEconomy(flight.getNumSeatsEconomy());
             dto.setNumBookedSeatsEconomy(flight.getNumBookedSeatsEconomy());
+            dto.setPriceBusiness(flight.getPriceBusiness());
+            dto.setPriceEconomy(flight.getPriceEconomy());
             dtos.add(dto);
         }
         return dtos;

@@ -13,7 +13,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public String bookTicket(Ticket ticket) {
-        if (ticket.equals(ticketRepo.findByCode(ticket.getTicketCode()))) {
+        if (ticket.equals(ticketRepo.findByTicketCode(ticket.getTicketCode()))) {
             return "An identical ticket with your code already exists in the database";
         } else {
             //Validation that there are enough seats on the flight for the reservation to be possible,

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class FlightController {
         flightService.deleteFlightbyId(id);
         return "Flight deleted";
     }
-    @PutMapping("/agency/flights/edit/{id}")
+    @PutMapping("/flights/edit/{id}")
     public ResponseEntity<Flight> editFlight(@PathVariable Long id,
                                              @RequestParam("flightCode") String flightCodeEdit,
                                              @RequestParam("origin") String originEdit,
@@ -69,37 +70,38 @@ public class FlightController {
                                              @RequestParam("ticketList") List<Long> ticketIds) {
         Optional<Flight> optionalFlight = flightService.findById(id);
         if (optionalFlight.isPresent()) {
-            Flight flight = optionalFlight.get();
+            Flight updatedFlight = optionalFlight.get();
+            //editing the parameters
+            updatedFlight.setFlightCode(flightCodeEdit);
+            updatedFlight.setOrigin(originEdit);
+            updatedFlight.setDestination(destinationEdit);
+            updatedFlight.setDateOfFlight(dateOfFlightEdit);
+            updatedFlight.setNumSeats(numSeatsEdit);
+            updatedFlight.setNumBookedSeats(numBookedSeatsEdit);
+            updatedFlight.setNumSeatsBusiness(numSeatsBusinessEdit);
+            updatedFlight.setNumBookedSeatsBusiness(numBookedSeatsBusinessEdit);
+            updatedFlight.setNumSeatsEconomy(numSeatsEconomyEdit);
+            updatedFlight.setNumBookedSeatsEconomy(numBookedSeatsEconomyEdit);
+            updatedFlight.setPriceBusiness(priceBusinessEdit);
+            updatedFlight.setPriceEconomy(priceEconomyEdit);
+            //declaring a fresh list of Tickets which will be filled from database.
+            List<Ticket> freshTicketList= new ArrayList<>();
 
-            flight.setFlightCode(flightCodeEdit);
-            flight.setOrigin(originEdit);
-            flight.setDestination(destinationEdit);
-            flight.setDateOfFlight(dateOfFlightEdit);
-            flight.setNumSeats(numSeatsEdit);
-            flight.setNumBookedSeats(numBookedSeatsEdit);
-            flight.setNumSeatsBusiness(numSeatsBusinessEdit);
-            flight.setNumBookedSeatsBusiness(numBookedSeatsBusinessEdit);
-            flight.setNumSeatsEconomy(numSeatsEconomyEdit);
-            flight.setNumBookedSeatsEconomy(numBookedSeatsEconomyEdit);
-            flight.setPriceBusiness(priceBusinessEdit);
-            flight.setPriceEconomy(priceEconomyEdit);
+                for(Long ticketId: ticketIds){
 
-            // Update ticketList if needed
-            if (ticketIds != null && !ticketIds.isEmpty()) {
-                for(Long id: ticketIds){
-                flight.getTicketList().add()ticketService.findTicketById(id);
-
+                freshTicketList.add(ticketService.findTicketById(ticketId));
             }
+            updatedFlight.setTicketList(freshTicketList);
 
             // Save the updated flight
-            Flight updatedFlight = flightService.createFlight(flight);
+           flightService.createFlight(updatedFlight);
             return ResponseEntity.ok(updatedFlight);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //TODO POST: /agency/flights/new
+
     //
     //PUT: /agency/flights/edit/{id}
     //

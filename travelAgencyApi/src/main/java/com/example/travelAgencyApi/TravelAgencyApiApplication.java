@@ -20,4 +20,5 @@ public class TravelAgencyApiApplication {
 	//DONE    Los DTOs deberian funcionar(?), comprobar de nuevo la transferencia de datos del objeto al DTO. Comprobar apuntes.
 	//@ResponseBody?????????
 	//DONE     revisar todas las clases y asegurarse de no dejar ni un solo tipo primitivo, luego borrar y levantar de nuevo la base de datos.
+	//TODO averiguar por qué en la búsqueda con filtros los campos "priceBusiness" y "priceEconomy" se quedan null en el JSON, probablemente falta algo en el metodo convertidor en la clase utilities.
 }
