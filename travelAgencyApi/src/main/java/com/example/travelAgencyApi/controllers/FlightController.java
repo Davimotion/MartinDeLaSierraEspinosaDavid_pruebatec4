@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,9 +51,21 @@ public class FlightController {
 
     @DeleteMapping("/flights/{id}")
     public String deleteFlightById(@PathVariable Long id){
-        flightService.deleteFlightbyId(id);
-        return "Flight deleted";
+        Optional<Flight> optionalFlight = flightService.findById(id);
+        if (optionalFlight.isPresent()) {
+            Flight flightToDelete = optionalFlight.get();
+            for(Ticket ticket: flightToDelete.getTicketList()){
+                ticketService.deleteTicketById(ticket.getId());
+            }
+            flightService.deleteFlightbyId(id);
+            return "Flight deleted";
+        }else{
+            return "No flight registered with this id";
+        }
+
+
     }
+    //Endpoint for editing and updating a flight in the database, the Flight's id is a @PathVariable, as that's how it appeared on the technical requirements.
     @PutMapping("/flights/edit/{id}")
     public ResponseEntity<Flight> editFlight(@PathVariable Long id,
                                              @RequestParam("flightCode") String flightCodeEdit,
@@ -66,8 +79,8 @@ public class FlightController {
                                              @RequestParam("numSeatsEconomy") Integer numSeatsEconomyEdit,
                                              @RequestParam("numBookedSeatsEconomy") Integer numBookedSeatsEconomyEdit,
                                              @RequestParam("priceBusiness") Double priceBusinessEdit,
-                                             @RequestParam("priceEconomy") Double priceEconomyEdit,
-                                             @RequestParam("ticketList") List<Long> ticketIds) {
+                                             @RequestParam("priceEconomy") Double priceEconomyEdit)
+                                             {
         Optional<Flight> optionalFlight = flightService.findById(id);
         if (optionalFlight.isPresent()) {
             Flight updatedFlight = optionalFlight.get();
@@ -84,14 +97,12 @@ public class FlightController {
             updatedFlight.setNumBookedSeatsEconomy(numBookedSeatsEconomyEdit);
             updatedFlight.setPriceBusiness(priceBusinessEdit);
             updatedFlight.setPriceEconomy(priceEconomyEdit);
-            //declaring a fresh list of Tickets which will be filled from database.
-            List<Ticket> freshTicketList= new ArrayList<>();
 
-                for(Long ticketId: ticketIds){
-
-                freshTicketList.add(ticketService.findTicketById(ticketId));
+            //Deleting the ticket list with every edit so that people aren't surprisingly assigned to a flight they didn't purchase.Also prevents infinite loops.
+            for(Ticket ticket: updatedFlight.getTicketList()){
+                ticketService.deleteTicketById(ticket.getId());
             }
-            updatedFlight.setTicketList(freshTicketList);
+            updatedFlight.setTicketList(Collections.emptyList());
 
             // Save the updated flight
            flightService.createFlight(updatedFlight);
@@ -102,8 +113,5 @@ public class FlightController {
     }
 
 
-    //
-    //PUT: /agency/flights/edit/{id}
-    //
-    //GET: /agency/flights → Todos los vuelos
+    
 }

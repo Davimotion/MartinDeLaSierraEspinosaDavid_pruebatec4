@@ -73,5 +73,9 @@ public class TicketController {
         }
     }
 
+    public String deleteTicketById(Long id){
+        ticketService.deleteTicketById(id);
+        return "ticket deleted";
+    }
 
 }

@@ -34,5 +34,10 @@ public class TicketService implements ITicketService {
     public Ticket findTicketById(Long id) {
         return ticketRepo.findById(id).orElse(null);
     }
+
+    @Override
+    public void deleteTicketById(Long id) {
+        ticketRepo.deleteById(id);
+    }
 }
 

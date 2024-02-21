@@ -6,4 +6,6 @@ public interface ITicketService {
     String bookTicket(Ticket ticket);
 
     Ticket findTicketById(Long id);
+
+    void deleteTicketById(Long id);
 }
