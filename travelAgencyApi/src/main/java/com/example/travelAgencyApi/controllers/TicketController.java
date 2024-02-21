@@ -28,6 +28,7 @@ public class TicketController {
     public String bookTicket(@RequestBody Ticket ticket, @RequestParam Long flightId, @RequestParam List<Long> passengersIds) {
 
         //This assigns persons to the list of passengers in the ticket. If someone on the list doesn't exist in the database, the registration won't go through.
+        //To properly test this in Postman, make sure to change the parameter ticketCode in the JSON.
         if (passengersIds.size() == ticket.getNumPassengers()){
             for(Long id: passengersIds){
                 Optional<Person> optionalPassenger = personService.findById(id);
@@ -61,7 +62,7 @@ public class TicketController {
                             (ticket.getNumSeatsBusiness() * ticket.getFlight().getPriceBusiness());
             ticket.setPrice(totalprice);
 
-        //This sends the ticket to the database and makes validations on the way and returns the diferent responses.
+        //This sends the ticket to the database and makes validations on the way and returns the diferent responses.This validation is currently not working.
             String response = ticketService.bookTicket(ticket);
             if (response.equals("An identical ticket with your code already exists in the database")) {
                 return response;

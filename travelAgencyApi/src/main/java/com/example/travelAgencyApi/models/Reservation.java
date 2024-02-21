@@ -30,6 +30,7 @@ public class Reservation implements Serializable {
     @ManyToOne
     @JoinColumn(name = "reservation_id")
     private Room room;
+
     private String reservationCode;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;

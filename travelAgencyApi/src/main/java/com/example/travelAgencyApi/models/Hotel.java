@@ -18,6 +18,7 @@ public class Hotel {
     private Long id;
 
     private String hotelCode;
+    private String name;
     private Boolean open;
     private String country;
     private String city;

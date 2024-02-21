@@ -11,7 +11,8 @@ public class TicketService implements ITicketService {
     @Autowired
     private TicketRepository ticketRepo;
 
-    @Override
+    @Override //TODO fix this mess of a validation, possibly move it to the controller. why does it let me make the same ticket twice but only twice???
+            //And after that it no longer lets me create a ticket with the same ticketCode in another flight, why???
     public String bookTicket(Ticket ticket) {
         if (ticket.equals(ticketRepo.findByTicketCode(ticket.getTicketCode()))) {
             return "An identical ticket with your code already exists in the database";

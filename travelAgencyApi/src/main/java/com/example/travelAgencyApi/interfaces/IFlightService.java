@@ -18,7 +18,7 @@ public interface IFlightService {
     void createFlight(Flight flight);
 
 
-    FlightDTO getFlightById(Long id);
+    Optional<Flight> getFlightById(Long id);
 
     Optional<Flight> findById(Long id);
 

@@ -56,15 +56,8 @@ public class FlightService implements IFlightService {
     }
 
     @Override
-    public FlightDTO getFlightById(Long id) {
-        Optional<Flight> optionalFlight = flightRepo.findById(id);
-        if(optionalFlight.isPresent()){
-            Flight flight = optionalFlight.get(); // Extracting the Flight object from Optional
-            return mapFlightToDTO(flight); // Mapping Flight to FlightDTO
-        }else{
-            return null;
-        }
-
+    public Optional<Flight> getFlightById(Long id) {
+        return flightRepo.findById(id);
 
     }
 

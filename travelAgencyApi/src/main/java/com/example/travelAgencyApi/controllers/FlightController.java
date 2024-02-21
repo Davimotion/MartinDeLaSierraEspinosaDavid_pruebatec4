@@ -4,6 +4,7 @@ import com.example.travelAgencyApi.DTOs.FlightDTO;
 import com.example.travelAgencyApi.interfaces.IFlightService;
 import com.example.travelAgencyApi.interfaces.ITicketService;
 import com.example.travelAgencyApi.models.Flight;
+import com.example.travelAgencyApi.models.Person;
 import com.example.travelAgencyApi.models.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,10 +45,25 @@ public class FlightController {
         return "Flight registered";
     }
 
+    //This method returns a flight by id with a list of associated tickets and passengers.
     @GetMapping("/flights/{id}")
-    public FlightDTO getFlightById(@PathVariable Long id){
-        return flightService.getFlightById(id);
+    public ResponseEntity <Flight> getFlightById(@PathVariable Long id) {
+        Optional<Flight> optionalFlight = flightService.getFlightById(id);
+        if (optionalFlight.isPresent()) {
+            Flight flight = optionalFlight.get();
+            for (Ticket ticket : flight.getTicketList()) {
+                ticket.setFlight(null); //we set this field to null to prevent infinite recursion.
+                for (Person passenger : ticket.getPassengers()) {
+                    passenger.setTicketList(Collections.emptyList());//we set this field to null to prevent infinite recursion.
+                    passenger.setReservationsList(Collections.emptyList());//we set this field to null to prevent infinite recursion.
+                }
+            }
+            return ResponseEntity.ok(flight);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 
     @DeleteMapping("/flights/{id}")
     public String deleteFlightById(@PathVariable Long id){
@@ -65,6 +81,7 @@ public class FlightController {
 
 
     }
+
     //Endpoint for editing and updating a flight in the database, the Flight's id is a @PathVariable, as that's how it appeared on the technical requirements.
     @PutMapping("/flights/edit/{id}")
     public ResponseEntity<Flight> editFlight(@PathVariable Long id,
