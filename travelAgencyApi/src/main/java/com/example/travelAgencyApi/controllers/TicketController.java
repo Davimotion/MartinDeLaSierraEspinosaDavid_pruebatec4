@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/agency")
 public class TicketController {
     @Autowired
     private ITicketService ticketService;
@@ -24,7 +25,7 @@ public class TicketController {
 
     //Method for the creation of new plane tickets, we send a JSON with the flight and passengers object parameters empty, and they get filled with from the database.
     //Puede que falten llamamientos a edit para las person y flights(?) no estoy seguro.
-    @PostMapping("/agency/flight-booking/new")
+    @PostMapping("/flight-booking/new")
     public String bookTicket(@RequestBody Ticket ticket, @RequestParam Long flightId, @RequestParam List<Long> passengersIds) {
 
         //This assigns persons to the list of passengers in the ticket. If someone on the list doesn't exist in the database, the registration won't go through.

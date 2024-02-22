@@ -14,10 +14,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
 
-                .csrf().disable() //desactiva una proteccion anti hackeo que te impide hacer POST a un servidor en tu mismo equipo
+                //disables a protection that limits testing with your own server. Pretty recent stuff according to the teacher.
+                .csrf().disable()
 
                 .authorizeHttpRequests()
-                .requestMatchers("/personas").permitAll()
+                .requestMatchers("/agency", "/agency/flights" ,"/agency/flights/filtered",
+                        "/agency/hotels", "/agency/hotels/get_available", "/agency/flight-booking/new",
+                        "/agency/rooms/from_hotel/{hotelId}", "agency/reservations/new" , "/doc/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()

@@ -35,10 +35,6 @@ public class FlightController {
         return flightService.geFlightsByParams(dateFrom,dateTo,origin,destination);
     }
 
-
-
-    //A partir de aqui métodos a asegurar con Spring Security.
-
     @PostMapping("/flights/new")
     public String createFlight (@RequestBody Flight flight){
         flightService.createFlight(flight);

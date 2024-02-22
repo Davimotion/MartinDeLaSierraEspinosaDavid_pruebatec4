@@ -81,7 +81,7 @@ public class HotelController {
         return availableHotelslist;
     }
 
-
+    //this method gets a hotel by id
     @GetMapping("/hotels/{id}")
     public ResponseEntity<Hotel> findHotelById(@PathVariable Long id) {
         Optional<Hotel> optionalHotel = hotelService.findById(id);
