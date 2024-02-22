@@ -2,7 +2,12 @@ package com.example.travelAgencyApi.utilities;
 
 
 import com.example.travelAgencyApi.DTOs.FlightDTO;
+import com.example.travelAgencyApi.interfaces.*;
 import com.example.travelAgencyApi.models.Flight;
+import com.example.travelAgencyApi.models.Ocupation;
+import com.example.travelAgencyApi.models.Room;
+import lombok.experimental.UtilityClass;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,10 +60,12 @@ public class TravelApiUtils {
         return dtos;
     }
 
-    public static List<LocalDate> getDatesBetween(
-            LocalDate startDate, LocalDate endDate) {
+    public static List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
 
         return startDate.datesUntil(endDate)
                 .collect(Collectors.toList());
     }
+
+
+
 }

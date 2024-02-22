@@ -41,6 +41,26 @@ public class PersonController {
         return persons;
     }
 
+    @GetMapping("/persons/{id}")
+    public ResponseEntity<Person> getPersonById(@PathVariable Long id) {
+        Optional<Person> optionalPerson = personService.findById(id);
+        if (optionalPerson.isPresent()) {
+            Person person = optionalPerson.get();
+            for (Ticket ticket : person.getTicketList()) {
+                ticket.setFlight(null);
+                ticket.setPassengers(Collections.emptyList());
+            }
+            for (Reservation reservation : person.getReservationsList()) {
+                reservation.setPerson(null);
+                reservation.setRoom(null);
+                reservation.setHotelBooked(null);
+            }
+            return ResponseEntity.ok(person);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     //This method edits a person in the database, but respects all entities associated with it. To add to the lists, use the create methods in the respective controllers.
 
     @PutMapping("/persons/edit/{id}")
@@ -67,6 +87,7 @@ public class PersonController {
             return ResponseEntity.notFound().build();
         }
     }
+
     //This method deletes a person in the database along with all entities related to it in the database. it is a true delete method.
     @DeleteMapping("/persons/delete/{id}")
     public String deletePerson(@PathVariable Long id) {
@@ -78,7 +99,7 @@ public class PersonController {
             for (Ticket ticket : personDelete.getTicketList()) {
                 ticketService.deleteTicketById(ticket.getId());//this loop deletes the entities present on the parameter ticketList by their id.
             }
-            for (Reservation reservation: personDelete.getReservationsList()){
+            for (Reservation reservation : personDelete.getReservationsList()) {
                 reservationService.deleteReservationById(reservation.getId());
             }
             return "Person deleted";

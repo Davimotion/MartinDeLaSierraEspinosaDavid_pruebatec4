@@ -25,7 +25,6 @@ public class Room {
     private Double price;
 
 
-    //Plantearse si este campo puede quedar luego vacio o asignarle otra reserva.
     @OneToMany(mappedBy = "room")
     private List<Reservation> reservation; //this field should be named as plural but it's too late and I'm scared to change it now.
 

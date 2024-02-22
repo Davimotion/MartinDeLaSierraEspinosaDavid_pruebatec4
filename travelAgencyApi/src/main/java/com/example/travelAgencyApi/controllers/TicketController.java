@@ -29,18 +29,17 @@ public class TicketController {
 
         //This assigns persons to the list of passengers in the ticket. If someone on the list doesn't exist in the database, the registration won't go through.
         //To properly test this in Postman, make sure to change the parameter ticketCode in the JSON.
-        if (passengersIds.size() == ticket.getNumPassengers()){
-            for(Long id: passengersIds){
+        if (passengersIds.size() == ticket.getNumPassengers()) {
+            for (Long id : passengersIds) {
                 Optional<Person> optionalPassenger = personService.findById(id);
-                if(optionalPassenger.isPresent()){
+                if (optionalPassenger.isPresent()) {
                     Person passenger = optionalPassenger.get();
                     ticket.getPassengers().add(passenger);
-                }else{
+                } else {
                     return "A person in the passengers' list is not registered in the database.";
                 }
             }
-        }else
-        {
+        } else {
             return "There's more entries in the passengers' list that number of seats booked." +
                     " Make sure that the parameter numPassengers is the same number as the size of the List";
         }
@@ -62,7 +61,7 @@ public class TicketController {
                             (ticket.getNumSeatsBusiness() * ticket.getFlight().getPriceBusiness());
             ticket.setPrice(totalprice);
 
-        //This sends the ticket to the database and makes validations on the way and returns the diferent responses.This validation is currently not working.
+            //This sends the ticket to the database and makes validations on the way and returns the diferent responses.This validation is currently not working.
             String response = ticketService.bookTicket(ticket);
             if (response.equals("An identical ticket with your code already exists in the database")) {
                 return response;
@@ -74,9 +73,18 @@ public class TicketController {
         }
     }
 
-    public String deleteTicketById(Long id){
-        ticketService.deleteTicketById(id);
-        return "ticket deleted";
+    //this method doesn't validate that the ticket already existed in the database before deleting because I wrote the method badly in TicketService
+    //two days ago and already has plenty of uses for me to change it. I added a validation later by creating another method that returns an optional.
+    @DeleteMapping("/ticket/delete/{id}")
+    public String deleteTicketById(@PathVariable Long id) {
+        Optional<Ticket> optionalTicket = ticketService.findOptionalTicketById(id);
+        if (optionalTicket.isPresent()) {
+            ticketService.deleteTicketById(id);
+            return "ticket not deleted";
+        } else {
+            return "ticket is not in the database";
+
+        }
     }
 
 }

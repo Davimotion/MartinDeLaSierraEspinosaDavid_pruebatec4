@@ -26,7 +26,7 @@ public class RoomController {
     //method that checks the database for a valid hotel and then adds a room to the database.
     @PostMapping("/rooms/new")
     public String createRoom(@RequestBody Room room, @RequestParam Long hotelId) {
-        Optional<Hotel> optionalHotel = hotelService.FindById(hotelId);
+        Optional<Hotel> optionalHotel = hotelService.findById(hotelId);
         if (optionalHotel.isPresent()) {
             roomService.saveRoom(room);
             return "Room created";
@@ -54,7 +54,7 @@ public class RoomController {
     //method that gets all the rooms that are contained in a hotel.
     @GetMapping("/rooms/from_hotel/{hotelId}")
     public ResponseEntity<List<Room>> getRoomsFromHotel(@PathVariable Long hotelId) {
-        Optional<Hotel> optionalHotel = hotelService.FindById(hotelId);
+        Optional<Hotel> optionalHotel = hotelService.findById(hotelId);
         if (optionalHotel.isPresent()) {
             Hotel hotel = optionalHotel.get();
             List<Room> roomList = hotel.getListOfRooms();

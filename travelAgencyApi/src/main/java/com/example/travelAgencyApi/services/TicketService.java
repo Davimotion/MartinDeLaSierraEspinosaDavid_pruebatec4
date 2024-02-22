@@ -6,6 +6,8 @@ import com.example.travelAgencyApi.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TicketService implements ITicketService {
     @Autowired
@@ -39,6 +41,11 @@ public class TicketService implements ITicketService {
     @Override
     public void deleteTicketById(Long id) {
         ticketRepo.deleteById(id);
+    }
+
+    @Override
+    public Optional<Ticket> findOptionalTicketById(Long id) {
+        return ticketRepo.findById(id);
     }
 }
 
