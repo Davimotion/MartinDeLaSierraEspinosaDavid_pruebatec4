@@ -28,4 +28,9 @@ public class HotelService implements IHotelService {
     public Optional<Hotel> FindById(Long id) {
         return hotelRepo.findById(id);
     }
+
+    @Override
+    public void deleteHotel(Long id) {
+        hotelRepo.deleteById(id);
+    }
 }

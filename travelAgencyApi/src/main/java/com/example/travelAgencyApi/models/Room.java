@@ -27,9 +27,9 @@ public class Room {
 
     //Plantearse si este campo puede quedar luego vacio o asignarle otra reserva.
     @OneToMany(mappedBy = "room")
-    private List<Reservation> reservation;
+    private List<Reservation> reservation; //this field should be named as plural but it's too late and I'm scared to change it now.
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room",cascade = CascadeType.REMOVE)
     private List<Ocupation> ocupationList;
 
     private Boolean available;

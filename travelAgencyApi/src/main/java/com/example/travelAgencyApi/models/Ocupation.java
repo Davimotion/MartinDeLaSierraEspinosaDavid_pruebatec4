@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+//There is a typo in "occupation", but it's T-11 hours, I can't deal with it anymore, I don't trust the refactor.
+//Maybe some programmer braver than me will hit it and I wish them good luck.
 public class Ocupation {
 
     @Id

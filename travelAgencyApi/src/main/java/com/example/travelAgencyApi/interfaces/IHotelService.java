@@ -12,4 +12,7 @@ public interface IHotelService {
 
 
     Optional<Hotel> FindById(Long id);
+
+    void deleteHotel(Long id);
+
 }

@@ -64,7 +64,7 @@ public class FlightController {
         }
     }
 
-
+    //What is a cascade lol. this deletes a flight and also deletes it's associated tickets from the database.
     @DeleteMapping("/flights/{id}")
     public String deleteFlightById(@PathVariable Long id){
         Optional<Flight> optionalFlight = flightService.findById(id);

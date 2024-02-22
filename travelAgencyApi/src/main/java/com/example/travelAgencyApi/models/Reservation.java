@@ -35,5 +35,5 @@ public class Reservation implements Serializable {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private Double price;
-    private Integer numpeople;
+    private Integer numPeople;
 }

@@ -41,6 +41,8 @@ public class PersonController {
         return persons;
     }
 
+    //This method edits a person in the database, but respects all entities associated with it. To add to the lists, use the create methods in the respective controllers.
+
     @PutMapping("/persons/edit/{id}")
     public ResponseEntity<Person> editPerson(@PathVariable Long id,
                                              @RequestParam String name,
@@ -65,14 +67,16 @@ public class PersonController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    //This method deletes a person in the database along with all entities related to it in the database. it is a true delete method.
     @DeleteMapping("/persons/delete/{id}")
     public String deletePerson(@PathVariable Long id) {
         Optional<Person> optionalPerson = personService.findById(id);
+
+        //I didn't know what a cascade was when God compelled me to make this.
         if (optionalPerson.isPresent()) {
-            Person personDelete = optionalPerson.get();
+            Person personDelete = optionalPerson.get(); //this aconfirms a Person has been retrieved from the database.
             for (Ticket ticket : personDelete.getTicketList()) {
-                ticketService.deleteTicketById(ticket.getId());
+                ticketService.deleteTicketById(ticket.getId());//this loop deletes the entities present on the parameter ticketList by their id.
             }
             for (Reservation reservation: personDelete.getReservationsList()){
                 reservationService.deleteReservationById(reservation.getId());

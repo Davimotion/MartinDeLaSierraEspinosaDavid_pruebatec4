@@ -57,7 +57,7 @@ public class HotelController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    //This method edits a hotel in the database, but respects all Rooms and Reservations associated with it. To add to the lists, use the create methods in the respective controllers.
     @PutMapping("/hotels/edit/{id}")
     public ResponseEntity<Hotel> editHotel(@PathVariable Long id,
                                     @RequestParam String hotelCode,
@@ -83,18 +83,25 @@ public class HotelController {
             //This prevents infinite recursion by showing the list as empty in the response, but the relationship is preserved in the database.
             hotel.setListOfRooms(Collections.emptyList());
             hotel.setListOfReservations(Collections.emptyList());
+
             return ResponseEntity.ok(hotel);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    //this method is really simple because I found out what a cascade was :)
+    //This method deletes a specific hotel by id.
     @DeleteMapping("hotels/delete/{id}")
     public String deleteHotel(@PathVariable Long id){
         Optional<Hotel> hotelDelete= hotelService.FindById(id);
         if(hotelDelete.isPresent()){
-
+            hotelService.deleteHotel(id);
+            return "Hotel deleted";
+        }else {
+            return "Hotel wit id " + id + " was not found in database";
         }
+
     }
 
 }
