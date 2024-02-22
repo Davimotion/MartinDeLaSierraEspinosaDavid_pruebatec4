@@ -40,7 +40,7 @@ public class ReservationController {
             LocalDate dateTo = newReservation.getCheckOutDate();
 
             //this mess validates if the room is available. It should be a utility function, but it isn't.
-            Hotel testHotel = hotelService.findByIdSure(roomId);
+            Hotel testHotel = hotelService.findByIdSure(hotelId);
             for (Room testRoom : testHotel.getListOfRooms()) {
                 boolean isDateAvailable = testRoom.getAvailable(); // Initialize isDateAvailable based on room availability
                 if (isDateAvailable) {
