@@ -28,7 +28,7 @@ public class ReservationController {
     private IPersonService personService;
 
     //This endpoint is a disaster that could have been prevented when making the entity classes.
-    @GetMapping("/reservations/new")
+    @PostMapping("/reservations/new")
     public String createReservation(@RequestBody Reservation InputReservation,
                                     @RequestParam Long personId,
                                     @RequestParam Long hotelId,
